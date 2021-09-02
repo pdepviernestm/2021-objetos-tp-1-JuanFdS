@@ -44,7 +44,7 @@ A su vez, su neto es un 30% superior a lo que indica su categoría. P.ej. si Sof
 	- **vendedor**: <br> su neto es de 16000 pesos. Si hay muchas ventas, hay un aumento de 25% para todos los vendedores, o sea pasa a 20000. <br> Pista: hagan que el objeto que representa a esta categoría entienda los mensajes `activarAumentoPorMuchasVentas()` y `desactivarAumentoPorMuchasVentas()`.
     
 1. Agregar dos personas más, según lo que se detalla a continuación.
-	- **Carla**, que en lugar de asignársele una categoría, se establece un neto de 28000 pesos. <br> 
+	- **Carla**, que en lugar de asignársele una categoría, se establece un neto de 28000 pesos. <br> 
 	El sueldo se calcula como ```neto + bono por resultados + 9000 pesos```. <br> 
 	Para el bono por resultados, se usan las mismas opciones que para Pepe.
 
