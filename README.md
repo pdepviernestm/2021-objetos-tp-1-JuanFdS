@@ -1,6 +1,6 @@
 # Consigna TP-1
 
-## Sueldo de pepe
+## Sueldos
 
 Implementar en Wollok los objetos necesarios para calcular el sueldo de pepe.
   
