@@ -1,5 +1,143 @@
 import tp.*
+import bonosPorPresentismo.*
+import bonosPorResultado.*
 
-test "Test de ejemplo" {
-		assert.equals(4, 2 + 2)
+describe "sueldo neto" {
+	test "para los gerentes es 15000" {
+		pepe.categoria(gerente)
+
+		assert.equals(15000, pepe.neto())
+	}
+	
+	test "para los cadetes es 20000" {
+		pepe.categoria(cadete)
+
+		assert.equals(20000, pepe.neto())
+	}
+	
+	test "para sofia es un 30% mas del de su categoria" {
+		sofia.categoria(cadete)
+		
+		assert.equals(26000, sofia.neto())
+	}
+	
+	test "para los vendedores, si no hay muchas ventas es $16000" {
+		vendedor.desactivarAumentoPorMuchasVentas()
+		pepe.categoria(vendedor)
+		
+		assert.equals(16000, pepe.neto())
+	}
+	
+	test "para los vendedores, si hay muchas ventas es un 25% mas" {
+		vendedor.activarAumentoPorMuchasVentas()
+		pepe.categoria(vendedor)
+		
+		assert.equals(20000, pepe.neto())
+	}
+
+	test "para oliver es igual al de su compañere" {
+		oliver.companiero(sofia)
+		sofia.categoria(vendedor)
+		
+		assert.equals(20800, oliver.neto())
+	}
+}
+
+describe "bono por resultados de pepe" {
+	test "cuando es de porcentaje es 10% sobre el neto" {
+		pepe.categoria(cadete)
+		pepe.tipoDeBonoPorResultados(porcentaje)
+		
+		assert.equals(2000, pepe.bonoPorResultados())
+	}
+	
+	test "cuando es de monto fijo es $800 fijos" {
+		pepe.tipoDeBonoPorResultados(montoFijo)
+		
+		assert.equals(800, pepe.bonoPorResultados())
+	}
+	
+	test "cuando es nulo son $0" {
+		pepe.tipoDeBonoPorResultados(bonoNuloPorResultados)
+		
+		assert.equals(0, pepe.bonoPorResultados())
+	}
+}
+
+describe "bono por presentismo" {
+	test "cuando es normal y la persona nunca falto es de $2000" {
+		pepe.tipoDeBonoPorPresentismo(normal)
+		
+		assert.equals(2000, pepe.bonoPorPresentismo())
+	}
+	
+	test "cuando es normal y la persona falto una vez es de $100" {
+		pepe.tipoDeBonoPorPresentismo(normal)
+		pepe.falto()
+		
+		assert.equals(1000, pepe.bonoPorPresentismo())
+	}
+	
+	test "cuando es normal y la persona falto mas de una vez es de 0" {
+		pepe.tipoDeBonoPorPresentismo(normal)
+		2.times { n => pepe.falto() }
+		
+		assert.equals(0, pepe.bonoPorPresentismo())
+	}
+	
+	test "cuando es ajuste y la persona falto alguna vez es $0" {
+		pepe.falto()
+		pepe.tipoDeBonoPorPresentismo(ajuste)
+		
+		assert.equals(100, pepe.bonoPorPresentismo())
+	}
+	
+	test "cuando es demagogico y el neto del empleado es menor a $18000 es $500" {
+		pepe.categoria(gerente)
+		pepe.tipoDeBonoPorPresentismo(demagogico)
+		
+		assert.equals(500, pepe.bonoPorPresentismo())
+	}
+	
+	test "cuando es demagogico y el neto del empleado es mayor a $18000 es $300" {
+		pepe.categoria(cadete)
+		pepe.tipoDeBonoPorPresentismo(demagogico)
+		
+		assert.equals(300, pepe.bonoPorPresentismo())
+	}
+	
+	test "cuando es nulo es $0" {
+		pepe.tipoDeBonoPorPresentismo(bonoNuloPorPresentismo)
+		
+		assert.equals(0, pepe.bonoPorPresentismo())
+	}
+}
+
+describe "sueldo de pepe" {
+	test "es el neto + el bono x resultados + el bono x presentismo" {
+		pepe.categoria(gerente)
+		pepe.tipoDeBonoPorResultados(montoFijo)
+		pepe.tipoDeBonoPorPresentismo(normal)
+		
+		assert.equals(17800, pepe.sueldo())
+	}
+}
+
+describe "sueldo de sofia" {
+	test "es el neto + el bono x resultados + $9000" {
+		sofia.categoria(gerente)
+		sofia.tipoDeBonoPorResultados(porcentaje)
+		
+		assert.equals(30450, sofia.sueldo())
+	}
+}
+
+describe "sueldo de oliver" {
+	test "es el neto + el bono x presentismo" {
+		oliver.companiero(pepe)
+		pepe.categoria(gerente)
+		oliver.tipoDeBonoPorPresentismo(normal)
+		
+		assert.equals(17000, oliver.sueldo())
+	}
 }
